@@ -30,25 +30,9 @@
             z-index: 1; 
         }
 
-        /* Powered By Watermark Styling */
-        .powered-by {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #2c3e50;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            text-align: center;
-            letter-spacing: 0.5px;
-            pointer-events: none; 
-            border: 1px solid rgba(0,0,0,0.1);
-            white-space: nowrap;
+        /* Lifts the bottom-right controls (Mode Menu) up so they don't get cut off on phones */
+        .leaflet-bottom.leaflet-right {
+            margin-bottom: 30px !important;
         }
         
         /* Custom Controls Styling */
@@ -180,13 +164,25 @@
         }
         .legend hr { margin: 12px 0; border: 0; border-top: 1px solid #eaeaea; }
         .legend-note { font-size: 11px; color: #7f8c8d; line-height: 1.4; display: block; }
+        
+        /* Credits merged into Legend */
+        .legend-credits {
+            margin-top: 12px; 
+            font-size: 9px; 
+            text-align: center; 
+            color: #7f8c8d; 
+            font-weight: bold; 
+            border-top: 1px dashed #ddd; 
+            padding-top: 8px;
+            letter-spacing: 0.5px;
+        }
 
         /* ========================================= */
         /* MOBILE RESPONSIVE RULES (Phones & Tablets)*/
         /* ========================================= */
         @media (max-width: 768px) {
             #search-input { 
-                width: 140px; /* Shrinks search bar so it doesn't hit left controls */
+                width: 140px; 
                 font-size: 13px; 
             }
             .legend { 
@@ -194,20 +190,16 @@
                 padding: 10px; 
                 font-size: 11px; 
                 line-height: 20px; 
-                margin-bottom: 10px !important;
+                margin-bottom: 20px !important;
             }
             .legend h4 { font-size: 12px; margin-bottom: 5px; }
             .legend-color { width: 12px; height: 12px; margin-right: 6px; }
             .legend-note { display: none; } /* Hides text block to save vertical space on phones */
             
-            .powered-by { 
-                font-size: 9px; 
-                bottom: 5px; 
-                padding: 4px 6px; 
-                width: max-content; 
-                max-width: 90%; 
-                white-space: normal; /* Allows text to wrap into 2 lines if needed */
-                line-height: 1.2;
+            .legend-credits {
+                font-size: 8px;
+                white-space: normal;
+                line-height: 1.4;
             }
             
             .locate-btn { padding: 6px 10px; font-size: 12px; }
@@ -215,11 +207,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Powered By Credits Section -->
-    <div class="powered-by">
-        POWERED BY KSHREYANSH PATIDAR, KRITIN GOYAL, VEER GHAI
-    </div>
 
     <div id="map"></div>
 
@@ -336,13 +323,12 @@
                 "🟢 Green Zone (Quiet)": greenLayer
             };
             
-            // MAGIC FIX FOR MOBILE: L.Browser.mobile automatically collapses this menu on phones!
             L.control.layers(baseMapToggle, overlaysToggle, { 
                 position: 'bottomright', 
                 collapsed: L.Browser.mobile 
             }).addTo(map);
 
-            // 8. Legend 
+            // 8. Legend (Credits are now neatly integrated inside this box!)
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
@@ -354,6 +340,9 @@
                     <div class="legend-item"><span class="legend-color" style="background: #2ecc71;"></span><span><strong>Green:</strong> Normal / Quiet</span></div>
                     <hr class="legend-note">
                     <span class="legend-note">* Faded circles indicate estimated footprint.</span>
+                    <div class="legend-credits">
+                        POWERED BY KSHREYANSH PATIDAR, KRITIN GOYAL, VEER GHAI
+                    </div>
                 `;
                 return div;
             };
