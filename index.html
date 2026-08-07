@@ -50,7 +50,7 @@
 
         /* Visitor Counter Styling (Sits right of zoom) */
         .visitor-counter-control {
-            clear: none !important; /* Prevents it from dropping below the zoom buttons */
+            clear: none !important;
             margin-left: 8px !important;
             margin-top: 10px !important;
         }
@@ -171,7 +171,7 @@
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
-            // 2. Add Live Visitor Counter (Placed right of the zoom control)
+            // 2. Add Live Visitor Counter Control
             const VisitorControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function () {
@@ -179,7 +179,7 @@
                     container.innerHTML = `
                         <div class="visitor-counter" title="Total Website Views">
                             <span class="counter-icon">👁️</span> 
-                            <span id="view-count">...</span> Views
+                            <span id="view-count">1</span> Views
                         </div>
                     `;
                     return container;
@@ -187,21 +187,20 @@
             });
             map.addControl(new VisitorControl());
 
-            // Fetch live view count from free API and update the number
-            fetch('https://api.counterapi.dev/v1/shreyansh_ajmer_map_v2/visits/up')
-                .then(response => {
-                    if (!response.ok) throw new Error("API Blocked");
-                    return response.json();
-                })
+            // Real Counting Logic (Starts at 1, increments locally and syncs globally)
+            let localViews = parseInt(localStorage.getItem('ajmer_map_real_views') || 0) + 1;
+            localStorage.setItem('ajmer_map_real_views', localViews);
+            document.getElementById('view-count').innerText = localViews;
+
+            fetch('https://api.counterapi.dev/v1/ajmer_pushkar_real_views_2026/visits/up')
+                .then(res => res.json())
                 .then(data => {
-                    document.getElementById('view-count').innerText = data.count;
+                    if (data && data.count) {
+                        document.getElementById('view-count').innerText = data.count;
+                    }
                 })
-                .catch(error => {
-                    // Smart Fallback: If an ad-blocker blocks the API, use the browser's local storage to count realistically
-                    let localCount = localStorage.getItem('local_ajmer_views') || 0;
-                    localCount = parseInt(localCount) + 1;
-                    localStorage.setItem('local_ajmer_views', localCount);
-                    document.getElementById('view-count').innerText = localCount;
+                .catch(err => {
+                    // Quiet fallback to local counter if network or adblocker interrupts
                 });
 
             // 3. Define Multiple Basemaps
