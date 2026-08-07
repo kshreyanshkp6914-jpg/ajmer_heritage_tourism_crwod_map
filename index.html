@@ -171,7 +171,7 @@
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
-            // 2. Add Live Global Visitor Counter
+            // 2. Add Live Global Visitor Counter (Using Jason Cameron's Abacus API)
             const VisitorControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function () {
@@ -187,16 +187,21 @@
             });
             map.addControl(new VisitorControl());
 
-            // Strict Global Counter Fetch (No Local Storage)
-            fetch('https://api.counterapi.dev/v1/ajmer_map_global_shreyansh/views/up')
-                .then(response => response.json())
+            // 100% Global Counter Fetch (No Local Storage)
+            // Ping the Abacus API on every load. It globally tracks hits accurately.
+            fetch('https://abacus.jasoncameron.dev/hit/shreyansh_ajmer_map_v3/visits')
+                .then(response => {
+                    if (!response.ok) throw new Error("API Network Error");
+                    return response.json();
+                })
                 .then(data => {
-                    if (data && data.count) {
-                        document.getElementById('view-count').innerText = data.count;
+                    if (data && data.value) {
+                        document.getElementById('view-count').innerText = data.value;
                     }
                 })
                 .catch(error => {
-                    document.getElementById('view-count').innerText = "API Blocked"; 
+                    console.error('View counter API failed:', error);
+                    document.getElementById('view-count').innerText = "Live"; 
                 });
 
             // 3. Define Multiple Basemaps
@@ -226,13 +231,11 @@
                 { name: "Pushkar Lake & Sacred Ghats", lat: 26.4893, lng: 74.5553, category: "Sacred", zone: "Red", desc: "The ancient holy lake surrounded by 52 historic bathing ghats." },
                 { name: "Shah Jahan's Jami Masjid", lat: 26.4565, lng: 74.6285, category: "Heritage", zone: "Red", desc: "A stunning, sprawling 17th-century white marble mosque located within the Dargah precinct. Draws massive, continuous crowds of pilgrims." },
                 { name: "Brahma Ghat & Varaha Ghat", lat: 26.4886, lng: 74.5539, category: "Sacred", zone: "Red", desc: "These specific historic bathing steps act as absolute epicenters for evening Aartis and intense heritage foot traffic." },
-                
                 { name: "Adhai Din Ka Jhonpra", lat: 26.4556, lng: 74.6250, category: "Historical", zone: "Orange", desc: "A 12th-century structure featuring early Indo-Islamic architecture and 92 intricately carved pillars." },
                 { name: "Akbari Fort & Rajputana Museum", lat: 26.4618, lng: 74.6324, category: "Museum / Fort", zone: "Orange", desc: "A 16th-century Mughal citadel built by Emperor Akbar." },
                 { name: "Soniji Ki Nasiyan / Red Temple", lat: 26.4587, lng: 74.6332, category: "Religious", zone: "Orange", desc: "A 19th-century Jain temple renowned for its gold-plated wooden diorama." },
                 { name: "Tripolia Gate", lat: 26.4578, lng: 74.6289, category: "Historical", zone: "Orange", desc: "The ancient, multi-arched historical gateway that once served as the main entrance to the fortified old city. Bustling local heritage markets." },
                 { name: "Apteshwar Temple", lat: 26.4875, lng: 74.5545, category: "Religious", zone: "Orange", desc: "A 12th-century underground shrine dedicated to Lord Shiva. Situated close to the main Brahma Temple, it catches a significant spillover." },
-                
                 { name: "Ana Sagar Lake Pavilions & Daulat Bagh", lat: 26.4695, lng: 74.6270, category: "Leisure", zone: "Yellow", desc: "12th-century lake with gardens and marble pavilions added by Jahangir and Shah Jahan." },
                 { name: "Rangji Temple", lat: 26.4881, lng: 74.5569, category: "Religious", zone: "Yellow", desc: "A 19th-century temple blending Rajput, Mughal, and South Indian architectural styles." },
                 { name: "Varaha Temple", lat: 26.4879, lng: 74.5557, category: "Ancient Temple", zone: "Yellow", desc: "A 12th-century fortified temple dedicated to the boar incarnation of Lord Vishnu." },
@@ -241,7 +244,6 @@
                 { name: "Mayo College Main Building", lat: 26.4452, lng: 74.6469, category: "Educational", zone: "Yellow", desc: "An 1875 masterpiece of Indo-Saracenic architecture." },
                 { name: "Nareli Jain Temple", lat: 26.4172, lng: 74.7047, category: "Religious", zone: "Yellow", desc: "A magnificent, sprawling architectural site on the city's outskirts blending traditional Jain marble craftsmanship with contemporary design." },
                 { name: "Mahadeva Temple", lat: 26.4890, lng: 74.5560, category: "Religious", zone: "Yellow", desc: "A 19th-century white marble temple famed for its polished architecture and a five-faced idol of Lord Shiva." },
-                
                 { name: "Taragarh Fort", lat: 26.4430, lng: 74.6166, category: "Historical", zone: "Green", desc: "An ancient 8th-century hill fort offering panoramic views from steep slopes." },
                 { name: "Savitri Mata Temple", lat: 26.4783, lng: 74.5427, category: "Hilltop Shrine", zone: "Green", desc: "A historic hilltop shrine requiring a steep trek or cable car ride." },
                 { name: "Prithviraj Smarak", lat: 26.4456, lng: 74.6225, category: "Memorial", zone: "Green", desc: "A hilltop memorial dedicated to the 12th-century Rajput King Prithviraj Chauhan." },
