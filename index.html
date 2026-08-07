@@ -188,13 +188,20 @@
             map.addControl(new VisitorControl());
 
             // Fetch live view count from free API and update the number
-            fetch('https://api.counterapi.dev/v1/ajmer_heritage_tourism_crwod_map/views/up')
-                .then(response => response.json())
+            fetch('https://api.counterapi.dev/v1/shreyansh_ajmer_map_v2/visits/up')
+                .then(response => {
+                    if (!response.ok) throw new Error("API Blocked");
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('view-count').innerText = data.count;
                 })
                 .catch(error => {
-                    document.getElementById('view-count').innerText = "200+"; // Fallback if API is slow
+                    // Smart Fallback: If an ad-blocker blocks the API, use the browser's local storage to count realistically
+                    let localCount = localStorage.getItem('local_ajmer_views') || 0;
+                    localCount = parseInt(localCount) + 1;
+                    localStorage.setItem('local_ajmer_views', localCount);
+                    document.getElementById('view-count').innerText = localCount;
                 });
 
             // 3. Define Multiple Basemaps
