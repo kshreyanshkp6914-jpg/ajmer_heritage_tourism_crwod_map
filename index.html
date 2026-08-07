@@ -27,7 +27,7 @@
         #map {
             width: 100%;
             height: 100vh;
-            z-index: 1; /* Keeps map below floating elements */
+            z-index: 1; 
         }
 
         /* Powered By Watermark Styling */
@@ -46,8 +46,9 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             text-align: center;
             letter-spacing: 0.5px;
-            pointer-events: none; /* Allows clicking through the badge to the map */
+            pointer-events: none; 
             border: 1px solid rgba(0,0,0,0.1);
+            white-space: nowrap;
         }
         
         /* Custom Controls Styling */
@@ -66,13 +67,13 @@
             align-items: center;
             gap: 6px;
             transition: background-color 0.2s;
+            margin-top: 5px !important;
         }
         .locate-btn:hover { background-color: #f4f4f4; }
 
-        /* Visitor Counter Styling (Image-based) */
+        /* Visitor Counter Styling */
         .visitor-counter-control {
-            clear: none !important; 
-            margin-left: 8px !important;
+            margin-left: 10px !important;
             margin-top: 10px !important;
         }
         .visitor-counter {
@@ -99,6 +100,8 @@
             position: relative;
             border: 2px solid rgba(0,0,0,0.2);
             background-clip: padding-box;
+            margin-top: 10px !important;
+            margin-right: 10px !important;
         }
         #search-input {
             padding: 8px 12px;
@@ -154,8 +157,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .tag-category { background-color: #34495e; color: white; }
-        
-        /* Zone Colors */
         .tag-red { background-color: #e74c3c; color: white; }
         .tag-orange { background-color: #e67e22; color: white; }
         .tag-yellow { background-color: #f1c40f; color: #333; }
@@ -168,12 +169,48 @@
             color: #333; font-size: 13px; min-width: 200px;
             border: 2px solid rgba(0,0,0,0.2);
             background-clip: padding-box;
+            margin-bottom: 15px !important;
+            margin-left: 10px !important;
         }
         .legend h4 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.5px; }
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; }
         .legend-color {
             display: inline-block; width: 14px; height: 14px; border-radius: 50%;
             margin-right: 10px; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.4);
+        }
+        .legend hr { margin: 12px 0; border: 0; border-top: 1px solid #eaeaea; }
+        .legend-note { font-size: 11px; color: #7f8c8d; line-height: 1.4; display: block; }
+
+        /* ========================================= */
+        /* MOBILE RESPONSIVE RULES (Phones & Tablets)*/
+        /* ========================================= */
+        @media (max-width: 768px) {
+            #search-input { 
+                width: 140px; /* Shrinks search bar so it doesn't hit left controls */
+                font-size: 13px; 
+            }
+            .legend { 
+                min-width: 150px; 
+                padding: 10px; 
+                font-size: 11px; 
+                line-height: 20px; 
+                margin-bottom: 10px !important;
+            }
+            .legend h4 { font-size: 12px; margin-bottom: 5px; }
+            .legend-color { width: 12px; height: 12px; margin-right: 6px; }
+            .legend-note { display: none; } /* Hides text block to save vertical space on phones */
+            
+            .powered-by { 
+                font-size: 9px; 
+                bottom: 5px; 
+                padding: 4px 6px; 
+                width: max-content; 
+                max-width: 90%; 
+                white-space: normal; /* Allows text to wrap into 2 lines if needed */
+                line-height: 1.2;
+            }
+            
+            .locate-btn { padding: 6px 10px; font-size: 12px; }
         }
     </style>
 </head>
@@ -193,7 +230,7 @@
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
-            // 2. Add Live Global Visitor Counter (100% Image-Based to bypass Ad-Blockers)
+            // 2. Add Live Global Visitor Counter 
             const VisitorControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function () {
@@ -290,7 +327,7 @@
                 site.marker.bindPopup(popupHTML);
             });
 
-            // 7. Layer Control / View Changer (Bottom Right)
+            // 7. Layer Control / View Changer
             const baseMapToggle = { "Street View": osm, "Dark Mode": darkMap, "Satellite Imagery": satellite };
             const overlaysToggle = {
                 "🔴 Red Zone (Peak Crowds)": redLayer,
@@ -298,9 +335,14 @@
                 "🟡 Yellow Zone (Moderate)": yellowLayer,
                 "🟢 Green Zone (Quiet)": greenLayer
             };
-            L.control.layers(baseMapToggle, overlaysToggle, { position: 'bottomright', collapsed: false }).addTo(map);
+            
+            // MAGIC FIX FOR MOBILE: L.Browser.mobile automatically collapses this menu on phones!
+            L.control.layers(baseMapToggle, overlaysToggle, { 
+                position: 'bottomright', 
+                collapsed: L.Browser.mobile 
+            }).addTo(map);
 
-            // 8. Legend (Bottom Left)
+            // 8. Legend 
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
@@ -310,12 +352,14 @@
                     <div class="legend-item"><span class="legend-color" style="background: #e67e22;"></span><span><strong>Orange:</strong> Highly Crowded</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #f1c40f;"></span><span><strong>Yellow:</strong> Moderate Flow</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #2ecc71;"></span><span><strong>Green:</strong> Normal / Quiet</span></div>
+                    <hr class="legend-note">
+                    <span class="legend-note">* Faded circles indicate estimated footprint.</span>
                 `;
                 return div;
             };
             legend.addTo(map);
 
-            // 9. Search Bar (Top Right)
+            // 9. Search Bar
             const SearchControl = L.Control.extend({
                 options: { position: 'topright' },
                 onAdd: function () {
@@ -363,7 +407,7 @@
                 }
             });
 
-            // 10. "Locate Me" Button (Top Left)
+            // 10. "Locate Me" Button 
             const LocateControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function (map) {
