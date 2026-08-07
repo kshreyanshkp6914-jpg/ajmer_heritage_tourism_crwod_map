@@ -22,17 +22,16 @@
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
-            overflow: hidden; /* Prevents accidental scrolling */
+            overflow: hidden; 
         }
         
         #map {
             width: 100%;
             height: 100vh; /* Fallback for older browsers */
-            height: 100dvh; /* Dynamic viewport height: perfectly fits mobile screens! */
+            height: 100dvh; /* Dynamic viewport prevents mobile URL bar clipping */
             z-index: 1; 
         }
 
-        /* Lifts ALL bottom controls (Legend & View Changer) above mobile browser menus */
         .leaflet-bottom {
             margin-bottom: 25px !important;
         }
@@ -158,56 +157,51 @@
             margin-left: 10px !important;
             z-index: 1000 !important;
         }
-        .legend h4 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.5px; }
+        .legend h4 { margin: 0; font-size: 14px; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;}
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; }
         .legend-color {
             display: inline-block; width: 14px; height: 14px; border-radius: 50%;
             margin-right: 10px; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.4);
         }
-        .legend hr { margin: 12px 0; border: 0; border-top: 1px solid #eaeaea; }
-        .legend-note { font-size: 11px; color: #7f8c8d; line-height: 1.4; display: block; }
         
-        /* Credits merged into Legend */
+        /* Prominent Credits & Note styling */
         .legend-credits {
-            margin-top: 12px; 
-            font-size: 9px; 
+            margin-top: 4px;
+            margin-bottom: 12px; 
+            font-size: 10px; 
             text-align: center; 
-            color: #7f8c8d; 
-            font-weight: bold; 
-            border-top: 1px dashed #ddd; 
-            padding-top: 8px;
+            color: #2980b9; 
+            font-weight: 900; 
+            border-bottom: 1px dashed #ddd; 
+            padding-bottom: 8px;
             letter-spacing: 0.5px;
+        }
+        .legend-note { 
+            font-size: 11px; 
+            color: #7f8c8d; 
+            line-height: 1.4; 
+            display: block; 
+            margin-top: 10px; 
+            border-top: 1px solid #eaeaea; 
+            padding-top: 8px; 
         }
 
         /* ========================================= */
         /* MOBILE RESPONSIVE RULES (Phones & Tablets)*/
         /* ========================================= */
         @media (max-width: 768px) {
-            #search-input { 
-                width: 150px; 
-                font-size: 13px; 
-            }
+            .leaflet-bottom { margin-bottom: 35px !important; }
+            #search-input { width: 150px; font-size: 13px; }
             .legend { 
-                min-width: 160px; 
+                min-width: 150px; 
                 padding: 10px; 
                 font-size: 11px; 
                 line-height: 18px; 
             }
-            .legend h4 { font-size: 12px; margin-bottom: 5px; }
+            .legend h4 { font-size: 12px; }
+            .legend-credits { font-size: 9px; margin-bottom: 8px; padding-bottom: 6px; white-space: normal; line-height: 1.4; }
             .legend-color { width: 12px; height: 12px; margin-right: 6px; }
-            
-            /* Reduced size instead of hiding */
-            .legend-note { font-size: 9px; line-height: 1.2; margin-top: 6px; }
-            .legend hr { margin: 6px 0; }
-            
-            .legend-credits {
-                font-size: 8px;
-                white-space: normal;
-                line-height: 1.4;
-                margin-top: 8px;
-                padding-top: 6px;
-            }
-            
+            .legend-note { font-size: 9px; margin-top: 8px; padding-top: 6px; }
             .locate-btn { padding: 6px 10px; font-size: 12px; }
         }
     </style>
@@ -219,7 +213,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. Initialize Map
+            // 1. Initialize Map - Locked directly on Ajmer to prevent the mobile "Space View" zoom bug
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
@@ -334,21 +328,20 @@
                 collapsed: L.Browser.mobile 
             }).addTo(map);
 
-            // 8. Legend (With Credits)
+            // 8. Legend (Credits strictly at the TOP so they NEVER get cut off)
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
                 div.innerHTML = `
                     <h4>Tourist Density Zones</h4>
+                    <div class="legend-credits">POWERED BY KSHREYANSH PATIDAR, KRITIN GOYAL, VEER GHAI</div>
+                    
                     <div class="legend-item"><span class="legend-color" style="background: #e74c3c;"></span><span><strong>Red:</strong> Peak Crowded</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #e67e22;"></span><span><strong>Orange:</strong> Highly Crowded</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #f1c40f;"></span><span><strong>Yellow:</strong> Moderate Flow</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #2ecc71;"></span><span><strong>Green:</strong> Normal / Quiet</span></div>
-                    <hr class="legend-note">
+                    
                     <span class="legend-note">* Faded circles indicate estimated footprint.</span>
-                    <div class="legend-credits">
-                        POWERED BY KSHREYANSH PATIDAR, KRITIN GOYAL, VEER GHAI
-                    </div>
                 `;
                 return div;
             };
@@ -430,10 +423,6 @@
                 document.querySelector('.locate-btn').innerHTML = '📍 Locate Me';
                 alert("Could not access your location. Please ensure location services are turned on.");
             });
-
-            // Adjust bounds to fit all markers initially
-            const group = new L.featureGroup(sites.map(s => s.marker));
-            map.fitBounds(group.getBounds().pad(0.1));
             
         });
     </script>
