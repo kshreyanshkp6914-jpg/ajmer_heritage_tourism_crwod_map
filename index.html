@@ -53,7 +53,7 @@
         }
         
         /* Custom Controls Styling */
-        .locate-btn {
+        .custom-btn {
             background-color: white;
             border: 2px solid rgba(0,0,0,0.2);
             background-clip: padding-box;
@@ -68,9 +68,12 @@
             align-items: center;
             gap: 6px;
             transition: background-color 0.2s;
-            margin-top: 5px !important;
+            margin-top: 10px !important;
         }
-        .locate-btn:hover { background-color: #f4f4f4; }
+        .custom-btn:hover { background-color: #f4f4f4; }
+        
+        /* Specific margin adjustment for the Locate Me button */
+        .locate-btn { margin-top: 5px !important; }
 
         /* Visitor Counter Styling */
         .visitor-counter-control {
@@ -138,18 +141,9 @@
         .search-result-item:hover { background: #f8f9fa; }
 
         /* Popup Styling */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
+        .leaflet-popup-content-wrapper { border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .popup-content { min-width: 260px; max-width: 300px; }
-        .popup-content h3 {
-            margin: 0 0 8px 0;
-            color: #2c3e50;
-            font-size: 16px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 6px;
-        }
+        .popup-content h3 { margin: 0 0 8px 0; color: #2c3e50; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
         .popup-content p { margin: 10px 0 0 0; font-size: 13px; color: #444; line-height: 1.5; }
         .tag-container { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
         .tag {
@@ -173,65 +167,105 @@
             margin-left: 10px !important;
             z-index: 1000 !important;
         }
-        .legend h4 { margin: 0; font-size: 14px; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;}
+        .legend h4 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;}
         .legend-item { display: flex; align-items: center; margin-bottom: 8px; }
         .legend-color {
             display: inline-block; width: 14px; height: 14px; border-radius: 50%;
             margin-right: 10px; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.4);
         }
-        
-        /* Prominent Credits & Note styling */
-        .legend-credits {
-            margin-top: 4px;
-            margin-bottom: 12px; 
-            font-size: 10px; 
-            text-align: center; 
-            color: #2980b9; 
-            font-weight: 900; 
-            border-bottom: 1px dashed #ddd; 
-            padding-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
         .legend-note { 
-            font-size: 11px; 
-            color: #7f8c8d; 
-            line-height: 1.4; 
-            display: block; 
-            margin-top: 10px; 
-            border-top: 1px solid #eaeaea; 
-            padding-top: 8px; 
+            font-size: 11px; color: #7f8c8d; line-height: 1.4; display: block; 
+            margin-top: 10px; border-top: 1px solid #eaeaea; padding-top: 8px; 
         }
 
+        /* Modal (About Section) Styling */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .modal-content h2 { margin-top: 0; color: #2c3e50; font-size: 22px; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 15px;}
+        .modal-content p { color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 20px;}
+        .team-box {
+            background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid #e9ecef;
+        }
+        .team-box h3 { margin: 0 0 10px 0; font-size: 14px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; }
+        .team-names { font-weight: 800; color: #2980b9; font-size: 16px; line-height: 1.8; }
+        
+        .close-btn {
+            background: #e74c3c; color: white; border: none; padding: 10px 24px; border-radius: 6px; 
+            font-weight: bold; font-size: 14px; cursor: pointer; transition: background 0.2s; width: 100%;
+        }
+        .close-btn:hover { background: #c0392b; }
+
         /* ========================================= */
-        /* MOBILE RESPONSIVE RULES (Phones & Tablets)*/
+        /* MOBILE RESPONSIVE RULES */
         /* ========================================= */
         @media (max-width: 768px) {
             .leaflet-bottom { margin-bottom: 35px !important; }
-            #search-input { width: 150px; font-size: 13px; }
-            .legend { 
-                min-width: 150px; 
-                padding: 10px; 
-                font-size: 11px; 
-                line-height: 18px; 
-                max-height: 28vh;
-                overflow-y: auto;
-            }
+            #search-input { width: 140px; font-size: 13px; }
+            .legend { min-width: 150px; padding: 10px; font-size: 11px; line-height: 18px; max-height: 35vh; overflow-y: auto; }
             .legend h4 { font-size: 12px; }
-            .legend-credits { font-size: 9px; margin-bottom: 8px; padding-bottom: 6px; white-space: normal; line-height: 1.4; }
             .legend-color { width: 12px; height: 12px; margin-right: 6px; }
             .legend-note { font-size: 9px; margin-top: 8px; padding-top: 6px; }
-            .locate-btn { padding: 6px 10px; font-size: 12px; }
+            .custom-btn { padding: 6px 10px; font-size: 12px; }
+            
+            /* Give About button some breathing room from Search bar on mobile */
+            .about-control-container { margin-right: 10px !important; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ABOUT PAGE MODAL -->
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>About This Map</h2>
+            <p>Welcome to the <strong>Ajmer & Pushkar Heritage Density Map</strong>. We engineered this interactive platform to help tourists and locals navigate our rich historical landscape while visualizing real-time crowd densities.</p>
+            
+            <div class="team-box">
+                <h3>Designed & Developed By</h3>
+                <div class="team-names">
+                    Kshreyansh Patidar<br>
+                    Kritin Goyal<br>
+                    Veer Ghai
+                </div>
+            </div>
+            
+            <button class="close-btn" id="close-modal-btn">Return to Map</button>
+        </div>
+    </div>
 
     <div id="map"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. Initialize Map - Locked directly on Ajmer to prevent the mobile "Space View" zoom bug
+            // Modal Logic
+            const modal = document.getElementById('about-modal');
+            const closeBtn = document.getElementById('close-modal-btn');
+            
+            closeBtn.onclick = function() { modal.style.display = "none"; }
+            // Close modal if user clicks outside the white box
+            window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } }
+
+            // 1. Initialize Map
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
@@ -346,19 +380,16 @@
                 collapsed: L.Browser.mobile 
             }).addTo(map);
 
-            // 8. Legend
+            // 8. Legend (Credits removed for cleaner look!)
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
                 div.innerHTML = `
                     <h4>Tourist Density Zones</h4>
-                    <div class="legend-credits">POWERED BY KSHREYANSH PATIDAR, KRITIN GOYAL, VEER GHAI</div>
-                    
                     <div class="legend-item"><span class="legend-color" style="background: #e74c3c;"></span><span><strong>Red:</strong> Peak Crowded</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #e67e22;"></span><span><strong>Orange:</strong> Highly Crowded</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #f1c40f;"></span><span><strong>Yellow:</strong> Moderate Flow</span></div>
                     <div class="legend-item"><span class="legend-color" style="background: #2ecc71;"></span><span><strong>Green:</strong> Normal / Quiet</span></div>
-                    
                     <span class="legend-note">* Faded circles indicate estimated footprint.</span>
                 `;
                 return div;
@@ -379,6 +410,22 @@
                 }
             });
             map.addControl(new SearchControl());
+
+            // 10. "About" Button Control (Top Right)
+            const AboutControl = L.Control.extend({
+                options: { position: 'topright' },
+                onAdd: function () {
+                    const btn = L.DomUtil.create('button', 'custom-btn about-control-container');
+                    btn.innerHTML = 'ℹ️ About';
+                    btn.title = "About this project";
+                    btn.onclick = function() {
+                        modal.style.display = "flex";
+                    };
+                    L.DomEvent.disableClickPropagation(btn);
+                    return btn;
+                }
+            });
+            map.addControl(new AboutControl());
 
             const searchInput = document.getElementById('search-input');
             const searchResults = document.getElementById('search-results');
@@ -413,17 +460,18 @@
                 }
             });
 
-            // 10. "Locate Me" Button 
+            // 11. "Locate Me" Button (Top Left)
             const LocateControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function (map) {
-                    const btn = L.DomUtil.create('button', 'locate-btn');
+                    const btn = L.DomUtil.create('button', 'custom-btn locate-btn');
                     btn.innerHTML = '📍 Locate Me';
                     btn.title = "Find my GPS location";
                     btn.onclick = function() {
                         btn.innerHTML = '⏳ Locating...';
                         map.locate({setView: true, maxZoom: 15, enableHighAccuracy: true});
                     };
+                    L.DomEvent.disableClickPropagation(btn);
                     return btn;
                 }
             });
