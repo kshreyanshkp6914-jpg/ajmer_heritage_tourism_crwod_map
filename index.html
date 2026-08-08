@@ -48,8 +48,9 @@
             z-index: 1; 
         }
 
+        /* Moved Legend and Layer Control further DOWN */
         .leaflet-bottom {
-            margin-bottom: 25px !important;
+            margin-bottom: 10px !important;
         }
         
         /* Custom Controls Styling */
@@ -68,12 +69,37 @@
             align-items: center;
             gap: 6px;
             transition: background-color 0.2s;
-            margin-top: 10px !important;
+            margin-top: 5px !important;
         }
         .custom-btn:hover { background-color: #f4f4f4; }
         
         /* Specific margin adjustment for the Locate Me button */
         .locate-btn { margin-top: 5px !important; }
+
+        /* The New "i" About Button Styling */
+        .about-btn {
+            background-color: white;
+            border: 2px solid rgba(0,0,0,0.2);
+            background-clip: padding-box;
+            border-radius: 4px;
+            width: 34px; /* Perfectly square to match zoom buttons */
+            height: 34px;
+            font-family: "Times New Roman", Times, serif; /* Gives it the classic 'i' look */
+            font-size: 20px;
+            font-style: italic;
+            font-weight: bold;
+            color: #2c3e50;
+            cursor: pointer;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-top: 10px !important;
+            margin-right: 10px !important;
+            padding: 0;
+        }
+        .about-btn:hover { background-color: #f4f4f4; color: #3498db; }
 
         /* Visitor Counter Styling */
         .visitor-counter-control {
@@ -180,7 +206,7 @@
 
         /* Modal (About Section) Styling */
         .modal-overlay {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
@@ -218,7 +244,9 @@
         /* MOBILE RESPONSIVE RULES */
         /* ========================================= */
         @media (max-width: 768px) {
-            .leaflet-bottom { margin-bottom: 35px !important; }
+            /* Moved Legend and Controls down for mobile specifically */
+            .leaflet-bottom { margin-bottom: 15px !important; }
+            
             #search-input { width: 140px; font-size: 13px; }
             .legend { min-width: 150px; padding: 10px; font-size: 11px; line-height: 18px; max-height: 35vh; overflow-y: auto; }
             .legend h4 { font-size: 12px; }
@@ -226,8 +254,7 @@
             .legend-note { font-size: 9px; margin-top: 8px; padding-top: 6px; }
             .custom-btn { padding: 6px 10px; font-size: 12px; }
             
-            /* Give About button some breathing room from Search bar on mobile */
-            .about-control-container { margin-right: 10px !important; }
+            .about-btn { margin-right: 10px !important; }
         }
     </style>
 </head>
@@ -380,7 +407,7 @@
                 collapsed: L.Browser.mobile 
             }).addTo(map);
 
-            // 8. Legend (Credits removed for cleaner look!)
+            // 8. Legend
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
@@ -411,12 +438,12 @@
             });
             map.addControl(new SearchControl());
 
-            // 10. "About" Button Control (Top Right)
+            // 10. "i" About Button Control (Top Right)
             const AboutControl = L.Control.extend({
                 options: { position: 'topright' },
                 onAdd: function () {
-                    const btn = L.DomUtil.create('button', 'custom-btn about-control-container');
-                    btn.innerHTML = 'ℹ️ About';
+                    const btn = L.DomUtil.create('button', 'about-btn');
+                    btn.innerHTML = 'i';
                     btn.title = "About this project";
                     btn.onclick = function() {
                         modal.style.display = "flex";
