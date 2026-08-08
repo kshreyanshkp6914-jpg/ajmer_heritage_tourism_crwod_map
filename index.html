@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ajmer & Pushkar Heritage Density Map</title>
+    
+    <!-- Primary Meta Tags for Google Search (SEO) -->
+    <title>Ajmer Tourist Crowd Map | Live Heritage Density & Guide</title>
+    <meta name="title" content="Ajmer Tourist Crowd Map | Live Heritage Density & Guide">
+    <meta name="description" content="Interactive Ajmer and Pushkar crowd map tracking live heritage tourist density across Dargah Sharif, Brahma Temple, Pushkar Ghats, and 25+ historical landmarks. Built by Kshreyansh Patidar, Kritin Goyal, and Veer Ghai.">
+    <meta name="keywords" content="ajmer crowd map, ajmer tourist crowd map, pushkar density map, ajmer heritage map, ajmer sharif dargah crowds, pushkar ghats crowd density">
+    <meta name="author" content="Kshreyansh Patidar, Kritin Goyal, Veer Ghai">
+    <meta name="robots" content="index, follow">
+
+    <!-- WhatsApp & Social Media Preview Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kshreyanshkp6914-jpg.github.io/ajmer_heritage_tourism_crwod_map/">
+    <meta property="og:title" content="Ajmer Tourist Crowd Map | Live Heritage Density & Guide">
+    <meta property="og:description" content="Explore heritage tourist density across Ajmer & Pushkar with our interactive density map. Built by Kshreyansh, Kritin, and Veer.">
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
@@ -27,8 +40,8 @@
         
         #map {
             width: 100%;
-            height: 100vh; /* Fallback for older browsers */
-            height: 100dvh; /* Dynamic viewport prevents mobile URL bar clipping */
+            height: 100vh;
+            height: 100dvh; 
             z-index: 1; 
         }
 
@@ -197,6 +210,8 @@
                 padding: 10px; 
                 font-size: 11px; 
                 line-height: 18px; 
+                max-height: 28vh;
+                overflow-y: auto;
             }
             .legend h4 { font-size: 12px; }
             .legend-credits { font-size: 9px; margin-bottom: 8px; padding-bottom: 6px; white-space: normal; line-height: 1.4; }
@@ -213,7 +228,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. Initialize Map - Locked directly on Ajmer to prevent the mobile "Space View" zoom bug
+            // 1. Initialize Map
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
@@ -328,7 +343,7 @@
                 collapsed: L.Browser.mobile 
             }).addTo(map);
 
-            // 8. Legend (Credits strictly at the TOP so they NEVER get cut off)
+            // 8. Legend
             const legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
