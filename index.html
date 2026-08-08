@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Site Verification Tag -->
+    <meta name="google-site-verification" content="-SGhQpqwlb2Tek5UsPUEI5jZZFREfhDO-kx0IkbxsOY" />
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -228,7 +231,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. Initialize Map
+            // 1. Initialize Map - Locked directly on Ajmer to prevent the mobile "Space View" zoom bug
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
