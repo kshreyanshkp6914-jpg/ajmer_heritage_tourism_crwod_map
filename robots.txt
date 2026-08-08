@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kshreyanshkp6914-jpg.github.io/ajmer_heritage_tourism_crwod_map/sitemap.xml
