@@ -296,14 +296,14 @@
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
-            // 2. Add Live Global Visitor Counter 
+            // 2. Add Live Global Visitor Counter (RESTORED ORIGINAL ID)
             const VisitorControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function () {
                     const container = L.DomUtil.create('div', 'visitor-counter-control');
                     container.innerHTML = `
                         <div class="visitor-counter" title="Total Global Views">
-                            <img src="https://api.visitorbadge.io/api/visitors?path=ajmer_igcse_map_final_v1&label=%F0%9F%91%81%EF%B8%8F%20Views&labelColor=%23ffffff&countColor=%232c3e50" alt="Live Views" style="height: 22px; border-radius: 2px;">
+                            <img src="https://api.visitorbadge.io/api/visitors?path=ajmer_pushkar_map_shreyansh_2026&label=%F0%9F%91%81%EF%B8%8F%20Views&labelColor=%23ffffff&countColor=%232c3e50" alt="Live Views" style="height: 22px; border-radius: 2px;">
                         </div>
                     `;
                     return container;
