@@ -303,7 +303,7 @@
                     const container = L.DomUtil.create('div', 'visitor-counter-control');
                     container.innerHTML = `
                         <div class="visitor-counter" title="Total Global Views">
-                            <img src="https://api.visitorbadge.io/api/visitors?path=ajmer_pushkar_map_shreyansh_2026&label=%F0%9F%91%81%EF%B8%8F%20Views&labelColor=%23ffffff&countColor=%232c3e50" alt="Live Views" style="height: 22px; border-radius: 2px;">
+                            <img src="https://api.visitorbadge.io/api/visitors?path=ajmer_igcse_map_final_v1&label=%F0%9F%91%81%EF%B8%8F%20Views&labelColor=%23ffffff&countColor=%232c3e50" alt="Live Views" style="height: 22px; border-radius: 2px;">
                         </div>
                     `;
                     return container;
@@ -311,9 +311,9 @@
             });
             map.addControl(new VisitorControl());
 
-            // 3. Define Multiple Basemaps
+            // 3. Define Multiple Basemaps (FIXED: Replaced CARTO with Esri for Dark Mode)
             const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' });
-            const darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '&copy; CARTO' });
+            const darkMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '&copy; Esri' });
             const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '&copy; Esri' });
 
             osm.addTo(map);
