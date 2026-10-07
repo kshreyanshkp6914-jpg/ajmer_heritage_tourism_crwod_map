@@ -48,7 +48,7 @@
             z-index: 1; 
         }
 
-        /* Moved Legend and Layer Control further DOWN */
+        /* Legend and Layer Control Bottom Margin */
         .leaflet-bottom {
             margin-bottom: 10px !important;
         }
@@ -73,18 +73,17 @@
         }
         .custom-btn:hover { background-color: #f4f4f4; }
         
-        /* Specific margin adjustment for the Locate Me button */
         .locate-btn { margin-top: 5px !important; }
 
-        /* The New "i" About Button Styling */
+        /* The "i" About Button Styling */
         .about-btn {
             background-color: white;
             border: 2px solid rgba(0,0,0,0.2);
             background-clip: padding-box;
             border-radius: 4px;
-            width: 34px; /* Perfectly square to match zoom buttons */
+            width: 34px; 
             height: 34px;
-            font-family: "Times New Roman", Times, serif; /* Gives it the classic 'i' look */
+            font-family: "Times New Roman", Times, serif; 
             font-size: 20px;
             font-style: italic;
             font-weight: bold;
@@ -244,16 +243,13 @@
         /* MOBILE RESPONSIVE RULES */
         /* ========================================= */
         @media (max-width: 768px) {
-            /* Moved Legend and Controls down for mobile specifically */
             .leaflet-bottom { margin-bottom: 15px !important; }
-            
             #search-input { width: 140px; font-size: 13px; }
             .legend { min-width: 150px; padding: 10px; font-size: 11px; line-height: 18px; max-height: 35vh; overflow-y: auto; }
             .legend h4 { font-size: 12px; }
             .legend-color { width: 12px; height: 12px; margin-right: 6px; }
             .legend-note { font-size: 9px; margin-top: 8px; padding-top: 6px; }
             .custom-btn { padding: 6px 10px; font-size: 12px; }
-            
             .about-btn { margin-right: 10px !important; }
         }
     </style>
@@ -296,7 +292,7 @@
             const map = L.map('map', { zoomControl: false }).setView([26.4650, 74.5900], 12);
             L.control.zoom({ position: 'topleft' }).addTo(map);
 
-            // 2. Add Live Global Visitor Counter (RESTORED ORIGINAL ID)
+            // 2. Add Live Global Visitor Counter (Original ID restored to keep 1000+ views)
             const VisitorControl = L.Control.extend({
                 options: { position: 'topleft' },
                 onAdd: function () {
@@ -311,8 +307,8 @@
             });
             map.addControl(new VisitorControl());
 
-            // 3. Define Multiple Basemaps (FIXED: Replaced CARTO with Esri for Dark Mode)
-            const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' });
+            // 3. Define Multiple Basemaps (FIXED: Both Street View and Dark Mode now use Esri to avoid file:// blocks and watermarks)
+            const osm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '&copy; Esri' });
             const darkMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '&copy; Esri' });
             const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '&copy; Esri' });
 
